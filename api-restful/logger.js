@@ -8,7 +8,7 @@ export const authenticate = (req, res, next) => {
   if ( token === "Bearer token123") {
     next();
   } else {
-    res.status(401).json({ message: "Not authorized" });
+    res.status(403).json({ message: "Not authorized" });
   }
 };
 
