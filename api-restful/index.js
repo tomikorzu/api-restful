@@ -16,11 +16,11 @@ let users = [
   { id: 3, name: "Silvana", email: "silvana@icloud.com" },
 ];
 
-app.get("/users", authenticate, (req, res) => {
+app.get("/users", (req, res) => {
   res.json(users);
 });
 
-app.get("/users/:id", authenticate, (req, res) => {
+app.get("/users/:id", (req, res) => {
   const id = req.params.id;
   const user = users.find((user) => user.id === parseInt(id));
   if (user) {
@@ -30,7 +30,7 @@ app.get("/users/:id", authenticate, (req, res) => {
   }
 });
 
-app.post("/users", (req, res) => {
+app.post("/users", validateUser, (req, res) => {
   const newUser = {
     id: users.length + 1,
     name: req.body.name,
