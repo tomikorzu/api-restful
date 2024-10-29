@@ -20,7 +20,7 @@ app.get("/users", (req, res) => {
   res.json(users);
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", authenticate, (req, res) => {
   const id = req.params.id;
   const user = users.find((user) => user.id === parseInt(id));
   if (user) {
