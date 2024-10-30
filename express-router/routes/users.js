@@ -27,4 +27,23 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.post("/", authenticate, (req, res) => {
+  const { name, email } = req.body;
+  db.run(`INSERT INTO users (name, email) VALUES (?, ?)`),
+    [name, email],
+    (err) => {
+      if (err) {
+        res.status(500).json({ message: err });
+      }
+      res
+        .status(200)
+        .json({
+          message: "User adde succesfully",
+          name,
+          email,
+          id: this.lastID,
+        });
+    };
+});
+
 export default router;
