@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 
-const db = sqlite3.Database("./databases/users.db");
+const db = new sqlite3.Database("users.db");
 
 db.serialize(() => {
   db.run(`

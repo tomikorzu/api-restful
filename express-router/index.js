@@ -1,5 +1,5 @@
 import { logger, authenticate } from "./middlewares/logger.js";
-import userRouter from "routes/users.js";
+import userRouter from "./routes/users.js";
 import express from "express";
 import dotenv from "dotenv";
 
