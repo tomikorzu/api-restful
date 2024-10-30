@@ -4,7 +4,7 @@ export const logger = (req, res, next) => {
 };
 
 export const authenticate = (req, res, next) => {
-  const token = req.headers[authorization];
+  const token = req.headers["authorization"];
   if (token === "Bearer token123") {
     next();
   } else {

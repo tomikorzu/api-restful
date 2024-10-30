@@ -1,5 +1,5 @@
-import usersDB from "../config/users.js";
-import { authenticate, logger, validateUser } from "../middlewares/logger.js";
+import db from "../config/users.js";
+import { authenticate, validateUser } from "../middlewares/logger.js";
 import express from "express";
 
 const router = express.Router();
@@ -36,7 +36,7 @@ router.post("/", validateUser, (req, res) => {
         res.status(500).json({ message: err });
       }
       res.status(200).json({
-        message: "User adde succesfully",
+        message: "User added succesfully",
         name,
         email,
         id: this.lastID,
