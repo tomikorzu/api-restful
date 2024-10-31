@@ -1,7 +1,12 @@
 import db from "../config/users-db.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-import roles from "../constants/roles.json";
+dotenv.config();
+const secretKey = process.env.SECRET_KEY;
+
+import roles from "../constants/roles.js";
 
 const register = (req, res) => {
   const { username, email, password, fullname } = req.body;
@@ -34,10 +39,7 @@ const register = (req, res) => {
             return res.status(500).json({ error: "Error registering user" });
           }
 
-          const token = jwt.sign(
-            { id: lastID, role: roles.employee },
-            secretKey
-          );
+          const token = jwt.sign({ username, role: roles.employee }, secretKey);
 
           res
             .status(201)
