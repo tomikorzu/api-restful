@@ -6,7 +6,7 @@ dotenv.config();
 const secretKey = process.env.SECRET_KEY;
 
 const verifyToken = (req, res, next) => {
-  const { token } = req.headers.autorization;
+  const token = req.headers.authorization;
 
   if (!token) {
     res.status(400).json({ message: "No token provided" });
@@ -16,6 +16,7 @@ const verifyToken = (req, res, next) => {
 
   jwt.verify(onlyToken, secretKey, (err, decoded) => {
     if (err) {
+      console.error(err, "ERrrrrr");
       res.status(401).json({ message: "Invalid token" });
     }
     req.user = decoded;

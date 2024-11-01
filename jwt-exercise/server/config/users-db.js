@@ -11,4 +11,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users(
         role TEXT NOT NULL
     )`);
 
+db.run("PRAGMA busy_timeout = 5000;");
+db.run("PRAGMA journal_mode=WAL;");
+
 export default db;

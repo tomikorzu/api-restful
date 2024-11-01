@@ -39,11 +39,7 @@ const register = (req, res) => {
             return res.status(500).json({ error: "Error registering user" });
           }
 
-          const token = jwt.sign({ username, role: roles.employee }, secretKey);
-
-          res
-            .status(201)
-            .json({ message: "User registered successfully", token });
+          res.status(201).json({ message: "User registered successfully" });
         }
       );
     }

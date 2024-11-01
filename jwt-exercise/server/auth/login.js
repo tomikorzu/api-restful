@@ -14,30 +14,45 @@ const login = (req, res) => {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  db.get(`SELECT email,password FROM users WHERE email = ?`, [email], (err, row) => {
-    if (err) {
-        console.error(err);
-        
-      return res.status(500).json({ error: "Internal server error" });
-    }
-
-    if (!row) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    bcrypt.compare(password, row.password, (err, result) => {
+  db.get(
+    `SELECT id, email,password FROM users WHERE email = ?`,
+    [email],
+    async (err, row) => {
       if (err) {
+        console.error(err);
+
         return res.status(500).json({ error: "Internal server error" });
       }
 
-      if (!result) {
-        return res.status(401).json({ error: "Incorrect password" });
+      if (!row) {
+        return res.status(404).json({ error: "User not found" });
       }
-      const token = jwt.sign({ email }, secretKey, { expiresIn: "1h" });
 
-      res.status(200).json({ message: "Login successful", token });
-    });
-  });
+      const result = new Promise((resolve) => {
+        bcrypt.compare(password, row.password, (err, result) => {
+          if (err) {
+            res.status(500).json({ error: "Internal server error" });
+            resolve(false);
+          }
+
+          if (!result) {
+            res.status(401).json({ error: "Incorrect password" });
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      });
+
+      if (await result) {
+        const token = jwt.sign({ email, id: row.id }, secretKey, {
+          expiresIn: "1h",
+        });
+
+        res.status(200).json({ message: "Login successful", token });
+      }
+    }
+  );
 };
 
 export default login;
